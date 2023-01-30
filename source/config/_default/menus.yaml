@@ -1,0 +1,21 @@
+main:
+  - identifier: home
+    name: Hello
+    pageref: /
+    weight: 10
+  - identifier: demo
+    name: Try it
+    pageref: /demo
+    weight: 20
+  - identifier: download
+    name: Get it
+    pageref: /download
+    weight: 30
+  - identifier: docs
+    name: Docs
+    pageref: /docs
+    weight: 40
+  - identifier: about
+    name: About
+    pageref: /about
+    weight: 50

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $title := site.Title }}
+    {{ if not .IsHome }}
+    {{ $title = printf "%s | %s" .Title site.Title }}
+    {{ end }}
+
+    {{ $pageId := "body" }}
+    {{ if isset .Params "pageid" }}
+    {{ $pageId = .Params.pageId }}
+    {{ end }}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#151658">
+    <meta name="msapplication-TileColor" content="#151658">
+    <meta name="theme-color" content="#ffd800">
+
+    <title>{{ $title }}</title>
+    <meta name="description" content="IDNA Convert is a pure PHP implementation of IDNA (Internationalized Domain Names in Applications)">
+    <meta name="author" content="Matthias Sommerfeld">
+
+    {{ $stylea := resources.Get "css/local.css" }}
+    {{ $styleb := resources.Get "css/highlightjs-theme.css" }}
+    {{ $stylec := resources.Get "bootstrap/css/bootstrap.css" }}
+    {{ $styled := resources.Get "scripts/highlight.js/styles/default.min.css" }}
+    {{ $css := slice $stylec $styled $stylea $styleb | resources.Concat "css/style.css" | resources.Minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body id="{{ $pageId }}">
+
+{{ block "navigation" . }}
+{{ partial "menus/main.html" . }}
+{{ end }}
+
+
+<div class="container article">
+    <div>
+        {{ block "main" . }}{{ end }}
+    </div>
+</div>
+
+{{ block "footer" . }}
+   {{ partial "menus/footer.html" . }}
+{{ end }}
+
+{{ $scriptA := resources.Get "scripts/jquery-1.11.3.js" }}
+{{ $scriptB := resources.Get "bootstrap/js/bootstrap.js" }}
+{{ $scriptC := resources.Get "scripts/modernizr-2.8.3-respond-1.4.2.min.js" }}
+{{ $js := slice $scriptA $scriptB $scriptC | resources.Concat "js/main.js" | resources.Minify | fingerprint }}
+<script src="{{ $js.RelPermalink}}" integrity="{{ $js.Data.Integrity}}"></script>
+{{ block "scripts-extra" .}}{{ end}}
+</body>
+</html>

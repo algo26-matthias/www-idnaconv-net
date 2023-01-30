@@ -1,0 +1,8 @@
+baseURL: 'https://www.idnaconv.net/'
+languageCode: 'en-us'
+title: 'IDNA Convert'
+disableKinds:
+ - taxonomy
+ - taxonomyTerm
+uglyURLs: true
+publishDir: /target

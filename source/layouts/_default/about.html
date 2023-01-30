@@ -1,0 +1,14 @@
+{{ define "main" }}
+<br>
+<div class="row">
+    <div class="col-lg-3 col-sm-4 hidden-xs">
+        {{ $image := .Page.Resources.GetMatch "matthias-sommerfeld.jpg" }}
+        <img src="{{ $image.RelPermalink }}" class="pull-left img-responsive img-thumbnail" style="margin:0 8px 8px 0" alt="Matthias Sommerfeld">
+    </div>
+
+    <div class="col-lg-9 col-sm-8">
+        {{ .Content }}
+    </div>
+</div>
+
+{{ end }}

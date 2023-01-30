@@ -1,0 +1,346 @@
+---
+title: Documentation
+layout: single
+pageId: docs
+---
+        <h1>Documentation</h1>
+
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#upgrading">Upgrading to a newer version</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#encoding_helper">Encoding helper</a></li>
+            <li><a href="#transcode_unicode">Transcode Unicode</a></li>
+            <li><a href="#run_tets">Run PHPUnit tests</a></li>
+            <li><a href="#report_bugs">Reporting bugs</a></li>
+            <li><a href="#contact_us">Contact the author</a></li>
+        </ul>
+
+        <section>
+            <hr>
+            <a class="anchor" id="introduction"></a>
+            <h2>Introduction</h2>
+
+            <p>
+                The library IdnaConvert allows to convert internationalized domain names (see
+                <a href="http://www.ietf.org/rfc/rfc3492.txt">RFC 3492</a>,
+                <a href="http://www.ietf.org/rfc/rfc5890.txt">RFC 5890</a>,
+                <a href="http://www.ietf.org/rfc/rfc5891.txt">RFC 5891</a>,
+                <a href="http://www.ietf.org/rfc/rfc5892.txt">RFC 5892</a>,
+                <a href="http://www.ietf.org/rfc/rfc5893.txt">RFC 5893</a>,
+                <a href="http://www.ietf.org/rfc/rfc5894.txt">RFC 5894</a>,
+                <a href="http://www.ietf.org/rfc/rfc6452.txt">RFC 6452</a>,
+                for details) as they can be used with various registries worldwide to be translated between their original (localized) form and their encoded form as it will be used in the DNS (Domain Name System).
+            </p>
+
+            <p>The library provides two classes (<code>ToIdn</code> and <code>ToUnicode</code> respectively), which expose three public methods to convert between the respective forms. See the Example section below.
+                This allows you to convert host names (simple labels like <code>localhost</code> or FQHNs like <code>some-host.domain.example</code>), email addresses and complete URLs.</p>
+
+            <p>Errors, incorrectly encoded or invalid strings will lead to various exceptions.  They should help you to find out, what went wrong.  </p>
+
+            <p>Unicode strings are expected to be UTF-8 strings. ACE strings (the Punycode form) are always 7bit ASCII strings.</p>
+        </section>
+
+        <section>
+            <hr>
+            <a class="anchor" id="installation"></a>
+            <h2>Installation</h2>
+
+            <h3>Via Composer</h3>
+
+            <p><code>composer require algo26-matthias/idna-convert</code></p>
+
+            <h3>Official ZIP Package</h3>
+
+            <p>The official ZIP packages are discontinued. Stick to Composer or Github to acquire your copy, please.</p>
+
+        </section>
+
+        <section>
+            <hr>
+            <a class="anchor" id="upgrading"></a>
+            <h2>Upgrading to a newer version</h2>
+
+            <hr>
+            <h3>3.0</h3>
+
+            <p>The library has been broken down into various specific classes, thus more closely following SOLID principles.</p>
+
+            <p>As such the single class <code>IdnaConvert</code> has been broken down into <code>ToIdn</code> and <code>ToUnicode</code> respectively. Their naming reflects
+                the format of the outcome, so it's more clear to distinguish, what you need. This should be easier to grasp then the old method names <code>encode()</code> and <code>decode()</code>.
+                Usually you will only need one conversion direction per script run, so why bother loading and parsing all the other unused code, then?</p>
+
+            <p>
+                Also the handling of host names (simple labels like <code>my-hostname</code> or FQHNs like <code>some-host.my-domain.example</code>) is now separated from that of email addresses and URLs.<br>
+                Both classes offer the same set of public methods:
+            </p>
+
+            <table class="table">
+                <tr>
+                    <td><code>convert()</code></td>
+                    <td>To convert host names</td>
+                </tr>
+                <tr>
+                    <td><code>convertEmailAddress()</code></td>
+                    <td>To convert email addresses</td>
+                </tr>
+                <tr>
+                    <td><code>convertUrl()</code></td>
+                    <td>To convert the host name of an URL</td>
+                </tr>
+            </table>
+
+            <p>There's no "strict mode" anymore, this is achieved by the separate methods above. The IDN version is selected when instantiating the class, no more setting during runtime.
+                Also, the encoding (for the Unicode side of things) is now <strong>always UTF-8</strong>. Use <code>TransCodeUnicode</code> or <code>EncodingHelper</code> for converting to and from various encodings to UTF-8.</p>
+
+            <p>All actual sub classes like that for NamePrep and the actual Punycode transformation are put in their own namespaces under <code>Algo26\IdnaConvert</code>, e.g. <code>Algo26\IdnaConvert\NamePrep</code>.
+                Interfaces and Exceptions also have their own namespace to declutter the class structure even more.</p>
+
+            <p>The class <code>EncodingHelper</code> is now called separated into the two classes <code>ToUtf8</code> and <code>FromUtf8</code> respectively and lies under the namespace <code>Algo26\idnaConvert\EncodingHelper</code>.
+                The class <code>UnicodeTranscoder</code> is now called <code>TransCodeUnicode</code> under the namespace <code>Algo26\idnaConvert\TransCodeUnicode</code>.</p>
+
+            <p>All examples are updated to reflect the new usage. See the ReadMe for more details.</p>
+
+            <p>Also the <strong>minimum PHP version is now 7.2</strong>.</p>
+
+            <hr>
+            <h3>2.0</h3>
+
+            <p>
+                The library has been handed over to actively maintained GitHub and Packagist accounts. This lead to a change in the namespace.<br>
+                Replace all occurrences of<br>
+                <code>Mso\IdnaConvert</code> or <code>PhlyLabs\IdnaConvert</code> to <code>Algo26\IdnaConvert</code>.<br>
+                There's no further changes to the class signatures.</p>
+
+            <hr>
+            <h3>1.0</h3>
+            <div><strong>BC break</strong></div>
+            <p>
+                As of version 1.0.0 the class closely follows the PSRs PSR-1, PSR-2 and PSR-4 of the PHP-FIG.
+                As such the classes' naming has been changed, a namespace has been introduced and the default IDN version has changed from 2003 to 2008 and minimum PHP engine version raised to 5.6.0.
+            </p>
+
+            <hr>
+            <h3>0.8.0</h3>
+            <p>
+                As of version 0.8.0 the class fully supports IDNA 2008.<br>
+                Thus the aforementioned parameter is deprecated and replaced by a parameter to switch between the standards. See the updated example 5 in the ReadMe.
+            </p>
+
+            <hr>
+            <h3>0.6.4</h3>
+            <div><strong>BC break</strong></div>
+            <p>
+                As of version 0.6.4 the class per default allows the German ligature ß to be encoded as the DeNIC, the registry for .DE allows domains containing ß.
+            </p>
+
+            <hr>
+            <h3>0.6.0</h3>
+            <p>
+                <strong>ATTENTION:</strong> As of version 0.6.0 this class is written in the OOP style of PHP 5.<br>
+                Since PHP 4 is no longer actively maintained, you should switch to PHP 5 as fast as possible.<br>
+                We expect to see no compatibility issues with the upcoming PHP 6, too.
+            </p>
+
+        </section>
+
+        <section>
+            <hr>
+            <a class="anchor" id="examples"></a>
+            <h2>Examples</h2>
+
+            <hr>
+            <h3>Example 1.</h3>
+
+            <p>Say we wish to encode the domain name nörgler.com:</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+// Include the class
+use Algo26\IdnaConvert\ToIdn;
+// Instantiate it
+$IDN = new ToIdn();
+// The input string, if input is not UTF-8 or UCS-4, it must be converted before
+$input = utf8_encode('nörgler.com');
+// Encode it to its punycode presentation
+$output = $IDN-&gt;convert($input);
+// Output, what we got now
+echo $output; // This will read: xn--nrgler-wxa.com
+                </code>
+            </pre>
+
+            <hr>
+            <h3>Example 2.</h3>
+
+            <p>We received an email from a internationalized domain and are want to decode it to its Unicode form.</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+// Include the class
+use Algo26\IdnaConvert\ToUnicode;
+// Instantiate it
+$IDN = new ToUnicode();
+// The input string
+$input = 'andre@xn--brse-5qa.xn--knrz-1ra.info';
+// Encode it to its punycode presentation
+$output = $IDN-&gt;convertEmailAddress($input);
+// Output, what we got now, if output should be in a format different to UTF-8
+// or UCS-4, you will have to convert it before outputting it
+echo utf8_decode($output); // This will read: andre@börse.knörz.info
+                </code>
+            </pre>
+
+            <hr>
+            <h3>Example 3.</h3>
+
+            <p>The input is read from a UCS-4 coded file and encoded line by line. By appending the optional second parameter we tell enode() about the input format to be used</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+// Include the class
+use Algo26\IdnaConvert\ToIdn;
+use Algo26\IdnaConvert\TranscodeUnicode\TranscodeUnicode;
+// Instantiate
+$IDN = new ToIdn();
+$UCTC = new TranscodeUnicode();
+// Iterate through the input file line by line
+foreach (file('ucs4-domains.txt') as $line) {
+    $utf8String = $UCTC-&gt;convert(trim($line), 'ucs4', 'utf8');
+    echo $IDN-&gt;convert($utf8String);
+    echo "\n";
+}
+                </code>
+            </pre>
+
+            <hr>
+            <h3>Example 4.</h3>
+
+            <p>We wish to convert a whole URI into the IDNA form, but leave the path or query string component of it alone. Just using encode() would lead to mangled paths or query strings. Here the public method encode_uri() comes into play:</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+// Include the class
+use Algo26\IdnaConvert\ToIdn;
+// Instantiate it
+$IDN = new ToIdn();
+// The input string, a whole URI in UTF-8 (!)
+$input = 'http://nörgler:secret@nörgler.com/my_päth_is_not_ÄSCII/');
+// Encode it to its punycode presentation
+$output = $IDN-&gt;convertUrl($input);
+// Output, what we got now
+echo $output; // http://nörgler:secret@xn--nrgler-wxa.com/my_päth_is_not_ÄSCII/
+                </code>
+            </pre>
+
+            <hr>
+            <h3>Example 5.</h3>
+
+            <p>Per default, the class converts strings according to IDNA version 2008. To support IDNA 2003, the class needs to be invoked with an additional parameter.</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+// Include the class
+use Algo26\IdnaConvert\ToIdn;
+// Instantiate it, switching to IDNA 2003, the original, now outdated standard
+$IDN = new ToIdn(2008);
+// Sth. containing the German letter ß
+$input = 'meine-straße.example';
+// Encode it to its punycode presentation
+$output = $IDN->convert($input);
+// Output, what we got now
+echo $output; // xn--meine-strae-46a.example<
+
+// Switch back to IDNA 2008
+$IDN = new ToIdn(2003);
+// Sth. containing the German letter ß
+$input = 'meine-straße.example';
+// Encode it to its punycode presentation
+$output = $IDN->convert($input);
+// Output, what we got now
+echo $output; // meine-strasse.example
+                </code>
+            </pre>
+        </section>
+
+        <section>
+            <hr>
+            <a class="anchor" id="encoding_helper"></a>
+            <h2>Encoding helper</h2>
+
+            <p>In case you have strings in encodings other than ISO-8859-1 and UTF-8 you might need to translate these strings to UTF-8 before feeding the IDNA converter with it.
+                PHP's built in functions <code>utf8_encode()</code> and <code>utf8_decode()</code> can only deal with ISO-8859-1.<br />
+                Use the encoding helper class supplied with this package for the conversion. It requires either iconv, libiconv or mbstring installed together with one of the relevant PHP extensions. The functions you will find useful are
+                <code>toUtf8()</code> as a replacement for <code>utf8_encode()</code> and
+                <code>fromUtf8()</code> as a replacement for <code>utf8_decode()</code>.</p>
+
+            <p>Example usage:</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+use Algo26\IdnaConvert\ToIdn;
+use Algo26\IdnaConvert\EncodingHelper\ToUtf8;
+
+$IDN = new ToIdn();
+$encodingHelper = new ToUtf8();
+
+$mystring = $encodingHelper->convert('&lt;something in e.g. ISO-8859-15', 'ISO-8859-15');
+echo $IDN->convert($mystring);
+                </code>
+            </pre>
+        </section>
+        <section>
+            <hr>
+            <a class="anchor" id="transcode_unicode"></a>
+            <h2>Transcode Unicode</h2>
+
+            <p>
+                Another class you might find useful when dealing with one or more of the Unicode encoding flavours. It can transcode into each other:
+                - UCS-4 string / array<br />
+                - UTF-8<br />
+                - UTF-7<br />
+                - UTF-7 IMAP (modified UTF-7)<br />
+                All encodings expect / return a string in the given format, with one major exception: UCS-4 array is just an array, where each value represents one code-point in the string, i.e. every value is a 32bit integer value.
+            </p>
+
+            <p>Example usage:</p>
+
+            <pre>
+                <code class="php">
+&lt;?php
+use Algo26\IdnaConvert\TranscodeUnicode\TranscodeUnicode;
+$transcodeUnicode = new TranscodeUnicode();
+
+$mystring = 'nörgler.com';
+echo $transcodeUnicode->convert($mystring, 'utf8', 'utf7imap');
+                </code>
+            </pre>
+        </section>
+
+        <section>
+            <hr>
+            <a class="anchor" id="run_tets"></a>
+
+            <h2>Run PHPUnit tests</h2>
+
+            <p>
+                The library is supplied with a <code>docker-compose.yml</code>, that allows to run the supplied tests. This assumes, you have Docker installed and docker-compose available as a command.
+            </p>
+            <p>
+                Just issue <code>docker-compose up</code> in you local command line and see the output of PHPUnit.
+            </p>
+        </section>
+
+        <section>
+            <hr>
+            <a class="anchor" id="report_bugs"></a>
+            <h2>Reporting bugs</h2>
+
+            <p>Please use the <a href="https://github.com/algo26-matthias/idna-convert/issues">issues tab on GitHub</a> to report any bugs or feature requests.</p>
+        </section>
