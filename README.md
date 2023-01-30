@@ -15,3 +15,7 @@ This project uses [HUGO](https://gohugo.io/categories/getting-started) to build 
 Change files in `./source` accordingly.
 
 To build and publish, open a pull request with your changes at GitHub.
+```
+docker-compose run hugo-build
+```
+and commit & push your results. Use the GitLab pipeline to deploy changes.

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pure PHP IDNA Converter on IDNA Convert</title>
+    <link>https://www.idnaconv.net/</link>
+    <description>Recent content in Pure PHP IDNA Converter on IDNA Convert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://www.idnaconv.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://www.idnaconv.net/about.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.idnaconv.net/about.html</guid>
+      <description>About the author and contributors The author  IDNA convert is written and maintained by Matthias Sommerfeld. He is a (freelance) web developer since 2000. His professional profile can be found over at LinkedIn, his company&#39;s website (in German) is here.  The first version of IDNA Convert came to light in 2004, when IDN domains became available in Germany. The goal was to easily handle IDN domains in various projects.</description>
+    </item>
+    
+    <item>
+      <title>Documentation</title>
+      <link>https://www.idnaconv.net/docs.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.idnaconv.net/docs.html</guid>
+      <description>Documentation  Introduction Installation Upgrading to a newer version Examples Encoding helper Transcode Unicode Run PHPUnit tests Reporting bugs Contact the author     Introduction  The library IdnaConvert allows to convert internationalized domain names (see RFC 3492, RFC 5890, RFC 5891, RFC 5892, RFC 5893, RFC 5894, RFC 6452, for details) as they can be used with various registries worldwide to be translated between their original (localized) form and their encoded form as it will be used in the DNS (Domain Name System).</description>
+    </item>
+    
+    <item>
+      <title>Download</title>
+      <link>https://www.idnaconv.net/download.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.idnaconv.net/download.html</guid>
+      <description>Get IDNA Convert You can either download it from GitHub or get the class through Composer (which is recommended).
+ Composer  Add the package to your composer.json file { &#34;require&#34;: { &#34;algo26-matthias/idna-convert&#34;: &#34;3.*&#34;, }, }  Run php composer.phar update.  GitHub  The project&#39;s repoistory is also hosted at GitHub.com. As such you can easily clone the repo like so: git clone https://github.com/algo26-matthias/idna-convert.git  Download  The official ZIP packages are discontinued.</description>
+    </item>
+    
+    <item>
+      <title>Try it</title>
+      <link>https://www.idnaconv.net/demo.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.idnaconv.net/demo.html</guid>
+      <description> Demonstration   Since this class does very simple conversion between ASCII and Unicode representations of (usually) domain or host names, there&#39;s not really a need for a demo.  Acquire your copy and start using it!  </description>
+    </item>
+    
+  </channel>
+</rss>
